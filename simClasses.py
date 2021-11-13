@@ -4,7 +4,8 @@ import simEvent
 
 # A classs to define the customer entity
 class Customer:
-    def __init__(self, startedWaiting):
+    def __init__(self, startedWaiting, customerNumber):
+        self.customerNumber = customerNumber
         self.startedWaiting = startedWaiting
 
 
@@ -33,7 +34,8 @@ class CustomerEvent:
 
 # A class to define the CheckOutLane entity
 class CheckOutLane:
-    def __init__(self):
+    def __init__(self, laneNumber):
+        self.laneNumber = laneNumber
         self.numCustomers = 0
         self.customerQueue = []
 
@@ -57,11 +59,22 @@ class Model:
     def queueEvent(event):
         return self.eventQueue.append(event)
     
-    def processEvents(customer, lanes, event):
+    def processEvents(customer, lanes, event, time):
         if event.getCustomerReadyToCheckOut():
             customerReadyToCheckOut(customer, lanes, self.totalTime, self.eventQueue)
         elif event.getcustomerProcessed():
-            customerProcessed(customer, lanes, self.totalTime, self.eventQueue)
+            customerProcessed(customer, lanes, time, self.eventQueue)
 
-        return
+    
+    def printLog(file, customerNumber, time, eventType):
+        logStr = ""
+        try:
+            if event.getCustomerReadyToCheckOut():
+                logStr = ""
+            elif event.getcustomerProcessed():
+                logStr = ""
+            file.write(logStr)
+
+        except IOError as e:
+            print(e)            
 

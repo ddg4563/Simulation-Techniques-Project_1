@@ -9,7 +9,7 @@ def customerReadyToCheckOut(customer, lanes, time, eventQueue):
     #loop through the check out lanes and assign customer to shortest lane
     
 
-    return
+    return (arrivalTime, laneChosen)
 
 
 
@@ -17,7 +17,7 @@ def customerReadyToCheckOut(customer, lanes, time, eventQueue):
 def customerProcessed(customer, lanes, time, eventQueue):
     #dequeue the  customer and update the time and statistics
 
-    return 
+    return (processTime, laneLeft)
 
 
 
