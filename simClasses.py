@@ -19,12 +19,14 @@ class CustomerEvent:
         self.customerProcessed = False
     
     def setCustomerReadyToCheckOut(value):
-        self.customerReadyToCheckOut = value
+        if type(value) == bool:
+            self.customerReadyToCheckOut = value
     def getCustomerReadyToCheckOut():
         return self.customerReadyToCheckOut
 
     def setcustomerProcessed(value):
-        self.customerProcessed = value
+        if type(value) == bool:
+            self.customerProcessed = value
     def getcustomerProcessed():
         return self.customerProcessed
 
