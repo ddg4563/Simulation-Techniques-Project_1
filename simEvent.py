@@ -15,8 +15,8 @@ def customerReadyToCheckOut(lanes, time):
     arrivalTime = 0 #needs inverseTransform technique
     #create a new customer and set its started waiting time
     shortestLane.queueCustomer(simClasses.Customer(arrivalTime))
-
-
+    laneChosen = shortestLane.laneNumber
+    
 
     return (customerNumber, arrivalTime, laneChosen)
 
