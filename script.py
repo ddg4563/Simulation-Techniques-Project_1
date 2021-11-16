@@ -15,7 +15,7 @@ csr = int(sys.argv[5])
 
 lanes = []
 
-    
+
 # run simulation and write to log file
 try:
 
@@ -28,19 +28,46 @@ try:
         checkOutLanesModel = simClasses.Model()
 
         #a customer number counter
-        customerNumber = 1
-        while checkOutLanesModel.totalTime < duration:
+        customerProcessedNumber = 1
+        checkOutLanesModel.queueEvent(simClasses.CustomerEvent().setCustomerReadyToCheckOut(True))
+        while checkOutLanesModel.eventQueue:
+
+            #dequeue a event
+            e = checkOutLanesModel.dequeueEvent()
+
+            # process the event
+            custNum, time, lane = checkOutLanesModel.processEvents(customerProcessedNumber, lanes, e, checkOutLanesModel.totalTime)
+
+            #update customer processed counter if customer processed event ocurred
+            if e.getcustomerProcessed():
+                customerProcessedNumber += 1
             
+            #print log output to log file
+            checkOutLanesModel.printLog(custNum, lane, time, e)
+
+            #update total time
+            checkOutLanesModel.totalTime += time
+
+
             #add customer ready to check out events to the event queue according to the customer arrival rate
-
+            for i in range(car):
+                checkOutLanesModel.queueEvent(simClasses.CustomerEvent().setCustomerReadyToCheckOut(True))
+            
             #add customer processed events to the event queue according to customer service rates
+            for i in range(csr):
+                checkOutLanesModel.queueEvent(simClasses.CustomerEvent().setcustomerProcessed(True))
 
-            #determine customer arrival time using inverse-transform equation
 
-            #create a new customer and set its started waiting time and customerNumber
+            
+            if checkOutLanesModel.totalTime >= duration:
+                break
+            
 
-            #process a event and print log output to log file
-            print()
+
+            
 
 except IOError as e:
     print(e)      
+
+
+#print statistics to a statistics file

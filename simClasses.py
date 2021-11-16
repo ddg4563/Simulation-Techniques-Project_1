@@ -4,8 +4,9 @@ import simEvent
 
 # A classs to define the customer entity
 class Customer:
-    def __init__(self, startedWaiting, customerNumber):
-        self.customerNumber = customerNumber
+    customerNumber = 0
+    def __init__(self, startedWaiting):
+        customerNumber += 1
         self.startedWaiting = startedWaiting
 
 
@@ -59,14 +60,14 @@ class Model:
     def queueEvent(event):
         return self.eventQueue.append(event)
     
-    def processEvents(customer, lanes, event, time):
+    def processEvents(customerNumber, lanes, event, time):
         if event.getCustomerReadyToCheckOut():
-            customerReadyToCheckOut(customer, lanes, self.totalTime, self.eventQueue)
+            return customerReadyToCheckOut(lanes, self.totalTime)
         elif event.getcustomerProcessed():
-            customerProcessed(customer, lanes, time, self.eventQueue)
+            return customerProcessed(customerNumber, lanes, time)
 
     
-    def printLog(file, customerNumber, time, eventType):
+    def printLog(file, customerNumber, lane, time, eventType):
         logStr = ""
         try:
             if event.getCustomerReadyToCheckOut():
