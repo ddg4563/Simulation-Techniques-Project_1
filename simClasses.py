@@ -6,7 +6,8 @@ import simEvent
 class Customer:
     customerNumber = 0
     def __init__(self, startedWaiting):
-        customerNumber += 1
+        Customer.customerNumber += 1
+        self.custNum = Customer.customerNumber
         self.startedWaiting = startedWaiting
 
 
