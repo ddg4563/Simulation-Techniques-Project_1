@@ -45,7 +45,8 @@ class CheckOutLane:
         return self.customerQueue.pop(0)
 
     def queueCustomer(customer):
-        return self.customerQueue.append(customer)
+        self.customerQueue.append(customer)
+        self.numCustomers += 1
 
 
 
