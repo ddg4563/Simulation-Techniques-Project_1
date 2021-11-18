@@ -21,16 +21,16 @@ class CustomerEvent:
         self.customerReadyToCheckOut = False
         self.customerProcessed = False
     
-    def setCustomerReadyToCheckOut(value):
+    def setCustomerReadyToCheckOut(self, value):
         if type(value) == bool:
             self.customerReadyToCheckOut = value
     def getCustomerReadyToCheckOut():
         return self.customerReadyToCheckOut
 
-    def setcustomerProcessed(value):
+    def setcustomerProcessed(self, value):
         if type(value) == bool:
             self.customerProcessed = value
-    def getcustomerProcessed():
+    def getcustomerProcessed(self):
         return self.customerProcessed
 
 
@@ -41,10 +41,10 @@ class CheckOutLane:
         self.numCustomers = 0
         self.customerQueue = []
 
-    def dequeueCustomer():
+    def dequeueCustomer(self):
         return self.customerQueue.pop(0)
 
-    def queueCustomer(customer):
+    def queueCustomer(self, customer):
         self.customerQueue.append(customer)
         self.numCustomers += 1
 
@@ -56,20 +56,20 @@ class Model:
         self.totalTime = 0.0
         self.eventQueue = []
 
-    def dequeueEvent():
+    def dequeueEvent(self):
         return self.eventQueue.pop(0)
 
-    def queueEvent(event):
+    def queueEvent(self, event):
         return self.eventQueue.append(event)
     
-    def processEvents(customerNumber, lanes, event, time):
+    def processEvents(self, customerNumber, lanes, event, time):
         if event.getCustomerReadyToCheckOut():
             return customerReadyToCheckOut(lanes, self.totalTime)
         elif event.getcustomerProcessed():
             return customerProcessed(customerNumber, lanes, time)
 
     
-    def printLog(file, customerNumber, lane, time, eventType):
+    def printLog(self, file, customerNumber, lane, time, eventType):
         logStr = ""
         try:
             if event.getCustomerReadyToCheckOut():

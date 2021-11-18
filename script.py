@@ -19,7 +19,7 @@ lanes = []
 # run simulation and write to log file
 try:
 
-    with open("log", "r+") as f:
+    with open("log", "a+") as f:
         #create lane queues
         for i in range(numlanes):
             lanes.append(simClasses.CheckOutLane(i))
@@ -29,6 +29,7 @@ try:
 
         #a customer number counter
         customerProcessedNumber = 1
+        # create initial customer event
         checkOutLanesModel.queueEvent(simClasses.CustomerEvent().setCustomerReadyToCheckOut(True))
         while checkOutLanesModel.eventQueue:
 

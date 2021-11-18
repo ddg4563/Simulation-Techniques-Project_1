@@ -1,8 +1,9 @@
 #python file to create and handle customer events
 import simClasses
+import math
+import random
 
-
-def customerReadyToCheckOut(lanes, time):
+def customerReadyToCheckOut(lanes, time, car):
     #When ready to enter a check-out lane, a customer selects the lane with the shortest line; if more than one line is 
     #of the shortest length, then one of those lanes is selected at random.
     
@@ -12,31 +13,32 @@ def customerReadyToCheckOut(lanes, time):
         if l.numCustomers < shortestLane.numCustomers:
             shortestLane = l
 
-    arrivalTime = 0 #needs inverseTransform technique
+    arrivalTime = (-1/car) * math.log(random.randrange(time, time + 1)) #needs inverseTransform technique
     #create a new customer and set its started waiting time
-    shortestLane.queueCustomer(simClasses.Customer(arrivalTime))
+    customer = simClasses.Customer(arrivalTime)
+    shortestLane.queueCustomer(customer)
     laneChosen = shortestLane.laneNumber
     
 
-    return (customerNumber, arrivalTime, laneChosen)
+    return (customer.customerNumber, arrivalTime, laneChosen)
 
 
 
 
-def customerProcessed(customerProcessedNumber, lanes, time):
+def customerProcessed(customerProcessedNumber, lanes, time, csr):
     #dequeue the  customer and update the time and statistics
     customer = None
-    laneleft = 0
+    laneLeft = 0
     #go through all lanes to find customer
     for l in range(len(lanes)):
         for c in l:
             if c.customerNumber == customerProcessedNumber:
                 customer = l.pop(0)
-                laneleft = l.laneNumber
+                laneLeft = l.laneNumber
     
-    processTime = 0 #needs inverseTransform technique
+    processTime = (-1/csr) * math.log(random.randrange(time, time +1)) #needs inverseTransform technique
                     
-    return (customerNumber, processTime, laneLeft)
+    return (customer.customerNumber, processTime, laneLeft)
 
 
 
