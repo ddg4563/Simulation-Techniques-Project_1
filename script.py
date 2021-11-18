@@ -4,8 +4,8 @@ import sys
 import random
 import simClasses
 
-print '\nNumber of arguments: ', len(sys.argv), 'arguments.'
-print 'Argument List:', str(sys.argv)
+print('\nNumber of arguments: ', len(sys.argv), 'arguments.')
+print('Argument List:', str(sys.argv))
 
 rngseed = int(sys.argv[1])
 duration = int(sys.argv[2])
