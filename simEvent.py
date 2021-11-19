@@ -9,7 +9,7 @@ def customerReadyToCheckOut(lanes, time, car):
     
     #loop through the check out lanes and assign customer to shortest lane
     shortestLane = lanes[0]
-    for l in range(len(lanes)):
+    for l in lanes:
         if l.numCustomers < shortestLane.numCustomers:
             shortestLane = l
 

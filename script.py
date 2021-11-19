@@ -30,14 +30,20 @@ try:
         #a customer number counter
         customerProcessedNumber = 1
         # create initial customer event
-        checkOutLanesModel.queueEvent(simClasses.CustomerEvent().setCustomerReadyToCheckOut(True))
+        e = simClasses.CustomerEvent()
+        e.setCustomerReadyToCheckOut(True)
+        checkOutLanesModel.queueEvent(e)
+        #checkOutLanesModel.queueEvent(simClasses.CustomerEvent().setCustomerReadyToCheckOut(True))
+        
+        print(checkOutLanesModel.eventQueue)
         while checkOutLanesModel.eventQueue:
 
             #dequeue a event
             e = checkOutLanesModel.dequeueEvent()
-
+            print(e)
             # process the event
-            custNum, time, lane = checkOutLanesModel.processEvents(customerProcessedNumber, lanes, e, checkOutLanesModel.totalTime)
+            if e:
+                custNum, time, lane = checkOutLanesModel.processEvents(customerProcessedNumber, lanes, e, checkOutLanesModel.totalTime, car, csr)
 
             #update customer processed counter if customer processed event ocurred
             if e.getcustomerProcessed():

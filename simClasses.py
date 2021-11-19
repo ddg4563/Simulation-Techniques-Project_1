@@ -24,7 +24,7 @@ class CustomerEvent:
     def setCustomerReadyToCheckOut(self, value):
         if type(value) == bool:
             self.customerReadyToCheckOut = value
-    def getCustomerReadyToCheckOut():
+    def getCustomerReadyToCheckOut(self):
         return self.customerReadyToCheckOut
 
     def setcustomerProcessed(self, value):
@@ -60,13 +60,15 @@ class Model:
         return self.eventQueue.pop(0)
 
     def queueEvent(self, event):
-        return self.eventQueue.append(event)
+        self.eventQueue.append(event)
     
-    def processEvents(self, customerNumber, lanes, event, time):
+    def processEvents(self, customerNumber, lanes, event, time, car, csr):
+        #print(self,customerNumber,lanes, event, time)
         if event.getCustomerReadyToCheckOut():
-            return customerReadyToCheckOut(lanes, self.totalTime)
+            print(lanes, self.totalTime, car)
+            return simEvent.customerReadyToCheckOut(lanes, self.totalTime, car)
         elif event.getcustomerProcessed():
-            return customerProcessed(customerNumber, lanes, time)
+            return simEvent.customerProcessed(customerNumber, lanes, time, csr)
 
     
     def printLog(self, file, customerNumber, lane, time, eventType):
