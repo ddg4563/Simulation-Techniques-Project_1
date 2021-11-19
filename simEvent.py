@@ -13,7 +13,7 @@ def customerReadyToCheckOut(lanes, time, car):
         if l.numCustomers < shortestLane.numCustomers:
             shortestLane = l
 
-    arrivalTime = (-1/car) * math.log(random.randrange(time, time + 1)) #needs inverseTransform technique
+    arrivalTime = random.expovariate(car) #needs inverseTransform technique
     #create a new customer and set its started waiting time
     customer = simClasses.Customer(arrivalTime)
     shortestLane.queueCustomer(customer)

@@ -71,7 +71,7 @@ class Model:
             return simEvent.customerProcessed(customerNumber, lanes, time, csr)
 
     
-    def printLog(self, file, customerNumber, lane, time, eventType):
+    def printLog(self, file, customerNumber, lane, time, event):
         logStr = ""
         try:
             if event.getCustomerReadyToCheckOut():

@@ -50,7 +50,7 @@ try:
                 customerProcessedNumber += 1
             
             #print log output to log file
-            checkOutLanesModel.printLog(custNum, lane, time, e)
+            checkOutLanesModel.printLog(f, custNum, lane, time, e)
 
             #update total time
             checkOutLanesModel.totalTime += time
