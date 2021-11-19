@@ -4,4 +4,4 @@ echo "Simulation Duration (mins)                               : $2"
 echo "Number of Check-out Lane(s)                              : $3"
 echo "Customer Arrival Rate (Customers/Min)                    : $4"
 echo "Customer Service Rate per Check-out Lane (Customers/Min) : $5"
-python script.py $@
+python3 simMain.py $@
