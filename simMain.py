@@ -107,33 +107,51 @@ except IOError as e:
     print(e)
 
 
+#calculate average number of customers in the system at any particular time
+pplSum = 0
+for i in range(len(pplInSystem)):
+    pplSum += pplInSystem[i]
+avgNumCust = pplSum/(len(pplInSystem))
+print("Average number of customers in the system at any particular time: " + str(avgNumCust))
+
+#calculate average time each customer spent in the system
+timeDiff = 0.0
+for i in range(len(totalTimesP)):
+    timeDiff += (totalTimesP[i] - totalTimesA[i])
+
+avgTimeCustWait = timeDiff / numberOfCustomersProcessed
+print("Average time each customer spent in the system: " + str(avgTimeCustWait))
+
 #calculate the average wait time for a customer to be served
 waitSum = 0.0
 for i in range(len(waitTimes)):
     waitSum += waitTimes[i]
 waitAverage = waitSum / len(waitTimes)
+
 print("Average time waited until serviced: " + str(waitAverage))
 
-#The average number of customers in the system at any particular time
-p = car / (csr*numlanes)
-L = p / (1 - p)
-print("L: " + str(L))
+#calculate average number of customers waiting to be served in all check out lanes at any particular time
+pplSum = 0
+for i in range(len(pplInSystem)):
+    pplSum += pplInSystem[i]
+timeDiff = 0.0
+for i in range(len(totalTimesP)):
+    timeDiff += (totalTimesP[i] - totalTimesA[i])
 
-#The average time each customer spent in the system
-W = 1 / ((csr*numlanes)*csr)
-print("W: " + str(W))
-
-#The average number of customers waiting to be served in all check-out lanes at any particular time
-LQ = (math.pow(p,2)) / (1 - p)
-print("LQ: " + str(LQ))
-
-
-#print the statistics to the file statistics
+numCustWait = pplSum / timeDiff
+print("Average number of customers waiting to be served in all check out lanes at any particular time: " + str(numCustWait))
+# calculate probability that no customers were in the system at any particular moment
+prob = 0.0
+prob = avgNumCust/timeDiff
+print("Probability that no customers were in the system at any particular moment: " + str(prob))
+#print average wait time statistic to file
 try:
     with open("statistics", "w+") as f:
+     f.write("Average number of customers in the system at any particular time: " + str(avgNumCust) + "\n")
+     f.write("Average time each customer spent in the system: " + str(avgTimeCustWait) + "\n")
      f.write("Average time waited until serviced: " + str(waitAverage) + "\n")
-     f.write("The average number of customers in the system at any particular time: " + str(L) + "\n")
-     f.write("The average time each customer spent in the system: " + str(W) + "\n")
-     f.write("The average number of customers waiting to be served in all check-out lanes at any particular time " + str(LQ) + "\n")
+     f.write("Average number of customers waiting to be served in all check out lanes at any particular time: " + str(numCustWait) + "\n")
+     f.write("Probability that no customer were in the system at any particular moment: " + str(prob) + "\n")
+
 except IOError as e:
     print(e)
