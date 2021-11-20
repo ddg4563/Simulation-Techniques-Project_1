@@ -1,6 +1,7 @@
 
 import sys
 import random
+import math
 
 print('\nNumber of arguments: ', len(sys.argv), 'arguments.')
 print('Argument List:', str(sys.argv))
@@ -97,17 +98,35 @@ try:
                 break
 except IOError as e:
     print(e)
+
+
 #calculate the average wait time for a customer to be served
 waitSum = 0.0
 for i in range(len(waitTimes)):
     waitSum += waitTimes[i]
 waitAverage = waitSum / len(waitTimes)
-
 print("Average time waited until serviced: " + str(waitAverage))
 
-#print average wait time statistic to file
+#The average number of customers in the system at any particular time
+p = car / (csr*numlanes)
+L = p / (1 - p)
+print("L: " + str(L))
+
+#The average time each customer spent in the system
+W = 1 / ((csr*numlanes)*csr)
+print("W: " + str(W))
+
+#The average number of customers waiting to be served in all check-out lanes at any particular time
+LQ = (math.pow(p,2)) / (1 - p)
+print("LQ: " + str(LQ))
+
+
+#print the statistics to the file statistics
 try:
     with open("statistics", "w+") as f:
      f.write("Average time waited until serviced: " + str(waitAverage) + "\n")
+     f.write("The average number of customers in the system at any particular time: " + str(L) + "\n")
+     f.write("The average time each customer spent in the system: " + str(W) + "\n")
+     f.write("The average number of customers waiting to be served in all check-out lanes at any particular time " + str(LQ) + "\n")
 except IOError as e:
     print(e)
