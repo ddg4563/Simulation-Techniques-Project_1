@@ -1,7 +1,5 @@
-
 import sys
 import random
-import math
 
 print('\nNumber of arguments: ', len(sys.argv), 'arguments.')
 print('Argument List:', str(sys.argv))
@@ -55,11 +53,7 @@ def customerProcessed(lanes, laneChosen, csr, time):
     #use inverse transform exponetial distibution to get process time of the customer
     processTime = random.expovariate(csr)
     #processTime += lanes[laneChosen].pop(0) # processTime = processTime + arrivalTime
-    
-    if not lanes[laneChosen]:
-        aTime = 0.0 # set arrival time to 0
-    else:
-        aTime = lanes[laneChosen].pop(0) # get the arrival time
+    aTime = lanes[laneChosen].pop(0) # get the arrival time
     waitDuration = (processTime + atime) - atime # calulate the amount of time waited
     #print("Time waited: " + str(waitDuration))
     return (time + processTime, laneLeft, waitDuration)
@@ -68,9 +62,15 @@ def customerProcessed(lanes, laneChosen, csr, time):
 #system variables for the main loop
 lanesChosen = []    #a queue for which lanes that the customers were added to
 totalTime = 0.0     # the total time of the simulation
+arrivalTimes = []
+totalTimesA = []
+totalTimesP = []
 totalCustomers = 1  #total number of customers in the simulation
 numberOfCustomersProcessed = 1  #total number of customers processed in the simulation
 waitTimes = [] #a list of wait times for each customer
+pplInSystem = []
+ppl = 0
+
 
 # write output to a log file
 try:
@@ -79,33 +79,36 @@ try:
             for r in range(car): # process customer arrival events according to customer arrival rate 
                 atime, lChosen = customerReadyToCheckOut(totalCustomers,lanes, totalTime, car) # call customerReadyToCheckOut to get the arrival time and lane chosen
                 lanesChosen.append(lChosen) # add the lane chosen to the lanesChosen queue
+                arrivalTimes.append(atime)
                 totalTime += atime #update the total simulation time
-
+                totalTimesA.append(totalTime)
                 print("Time: " + str(totalTime) + " Customer " + str(totalCustomers) +  " enters check-out lane " + str(lChosen+1)) # print output
                 f.write("Time: " + str(totalTime) + " Customer " + str(totalCustomers) +  " enters check-out lane " + str(lChosen+1) + "\n")
+                ppl += 1
+                pplInSystem.append(ppl)
 
 
                 totalCustomers +=1 #update total number of customers
     
             for p in range(csr): # process customer serviced events according to customer service rate 
-                if lanesChosen:
-                    lChosen = lanesChosen.pop(0) # get the lane that the current customer who is being processed was added to. the customer being processed corresponds to the numberOfCustomersProcessed variable 
-                    pTime, lLeft, timeWaited = customerProcessed(lanes, lChosen, csr, totalTime) #call the customerProcessed function and get the process time and the lane that was left
-                    totalTime = pTime #update total time
-                    waitTimes.append(timeWaited) # add the time waited for the customer
+                lChosen = lanesChosen.pop(0) # get the lane that the current customer who is being processed was added to. the customer being processed corresponds to the numberOfCustomersProcessed variable 
+                pTime, lLeft, timeWaited = customerProcessed(lanes, lChosen, csr, totalTime) #call the customerProcessed function and get the process time and the lane that was left
+                totalTime = pTime #update total time
+                waitTimes.append(timeWaited) # add the time waited for the customer
+                totalTimesP.append(totalTime)
 
-                    print("Time: " + str(totalTime) +  " Customer " + str(numberOfCustomersProcessed) + " exits check-out lane " + str(lLeft+1))    #print output
-                    f.write("Time: " + str(totalTime) +  " Customer " + str(numberOfCustomersProcessed) + " exits check-out lane " + str(lLeft+1) + "\n")
-                    numberOfCustomersProcessed += 1 #update the total number of customers processed
-                else:
-                    continue
+
+                print("Time: " + str(totalTime) +  " Customer " + str(numberOfCustomersProcessed) + " exits check-out lane " + str(lLeft+1))    #print output
+                f.write("Time: " + str(totalTime) +  " Customer " + str(numberOfCustomersProcessed) + " exits check-out lane " + str(lLeft+1) + "\n")
+                numberOfCustomersProcessed += 1 #update the total number of customers processed
+                ppl -= 1
+                pplInSystem.append(ppl)
     
 
             if totalTime >= duration: # exit loop when finished
                 break
 except IOError as e:
     print(e)
-
 
 #calculate average number of customers in the system at any particular time
 pplSum = 0
