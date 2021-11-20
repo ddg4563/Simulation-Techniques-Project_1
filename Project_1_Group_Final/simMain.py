@@ -52,8 +52,10 @@ def customerProcessed(lanes, laneChosen, csr, time):
 
     #use inverse transform exponetial distibution to get process time of the customer
     processTime = random.expovariate(csr)
-    #processTime += lanes[laneChosen].pop(0) # processTime = processTime + arrivalTime
-    aTime = lanes[laneChosen].pop(0) # get the arrival time
+    if not lanes[laneChosen]:
+        aTime = 0.0 # set arrival time to 0
+    else:
+        aTime = lanes[laneChosen].pop(0) # get the arrival time
     waitDuration = (processTime + atime) - atime # calulate the amount of time waited
     #print("Time waited: " + str(waitDuration))
     return (time + processTime, laneLeft, waitDuration)
@@ -90,19 +92,23 @@ try:
 
                 totalCustomers +=1 #update total number of customers
     
-            for p in range(csr): # process customer serviced events according to customer service rate 
-                lChosen = lanesChosen.pop(0) # get the lane that the current customer who is being processed was added to. the customer being processed corresponds to the numberOfCustomersProcessed variable 
-                pTime, lLeft, timeWaited = customerProcessed(lanes, lChosen, csr, totalTime) #call the customerProcessed function and get the process time and the lane that was left
-                totalTime = pTime #update total time
-                waitTimes.append(timeWaited) # add the time waited for the customer
-                totalTimesP.append(totalTime)
+            for p in range(csr): # process customer serviced events according to customer service rate
+                if lanesChosen:
+                    lChosen = lanesChosen.pop(0) # get the lane that the current customer who is being processed was added to. the customer being processed corresponds to the numberOfCustomersProcessed variable 
+                    pTime, lLeft, timeWaited = customerProcessed(lanes, lChosen, csr, totalTime) #call the customerProcessed function and get the process time and the lane that was left
+                    totalTime = pTime #update total time
+                    waitTimes.append(timeWaited) # add the time waited for the customer
+                    totalTimesP.append(totalTime)
 
 
-                print("Time: " + str(totalTime) +  " Customer " + str(numberOfCustomersProcessed) + " exits check-out lane " + str(lLeft+1))    #print output
-                f.write("Time: " + str(totalTime) +  " Customer " + str(numberOfCustomersProcessed) + " exits check-out lane " + str(lLeft+1) + "\n")
-                numberOfCustomersProcessed += 1 #update the total number of customers processed
-                ppl -= 1
-                pplInSystem.append(ppl)
+                    print("Time: " + str(totalTime) +  " Customer " + str(numberOfCustomersProcessed) + " exits check-out lane " + str(lLeft+1))    #print output
+                    f.write("Time: " + str(totalTime) +  " Customer " + str(numberOfCustomersProcessed) + " exits check-out lane " + str(lLeft+1) + "\n")
+                    numberOfCustomersProcessed += 1 #update the total number of customers processed
+                    ppl -= 1
+                    pplInSystem.append(ppl)
+                
+                else:
+                    continue
     
 
             if totalTime >= duration: # exit loop when finished
